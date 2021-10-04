@@ -88,11 +88,11 @@ fi
 echo 🚀 Releasing tags: $TAGS
 echo ========================
 
-dockerBuild "packages/${service}" "agoldis/sorry-cypress-${service}"
+dockerBuild "packages/${service}" "eduardoamparo/sorry-cypress-${service}"
 # dockerBuild "packages/api" "agoldis/sorry-cypress-api"
 # dockerBuild "packages/dashboard" "agoldis/sorry-cypress-dashboard"
 
-dockerPush "agoldis/sorry-cypress-${service}"
+dockerPush "eduardoamparo/sorry-cypress-${service}"
 # dockerPush "agoldis/sorry-cypress-api"
 # dockerPush "agoldis/sorry-cypress-dashboard"
 

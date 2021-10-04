@@ -43,6 +43,26 @@ export function RunSummaryComponent({
   const hasCompletion = !!run.completion;
   const completed = !!run.completion?.completed;
   const inactivityTimeoutMs = run.completion?.inactivityTimeoutMs;
+  const metaVersions = (run.metaVersions ? run.metaVersions : []);
+
+  // const metaVersions = [
+  //   {
+  //     "name": "Educator API",
+  //     "description": "Educator API",
+  //     "version":"1.1.001"
+  //   },
+  //   {
+  //     "name": "Student API",
+  //     "description": "Student API",
+  //     "version":"1.2.002"
+  //   },
+  //   {
+  //     "name": "Spark API",
+  //     "description": "Spark API",
+  //     "version":"1.3.003"
+  //   },
+  // ];
+
 
   if (!run.progress) {
     return <Pre_2_0_0_Run run={run} />;
@@ -97,6 +117,14 @@ export function RunSummaryComponent({
                 {claimedSpecsCount} / {overallSpecsCount}
               </Text>
             </li>
+            {metaVersions.map((versionItem) => (
+              <li>
+                <Text>{versionItem?.name}: </Text>
+                  <Text>
+                    {versionItem?.version}
+                  </Text>
+              </li>
+            ))}
           </ul>
         </Cell>
         <Cell xs={12} md={6}>
