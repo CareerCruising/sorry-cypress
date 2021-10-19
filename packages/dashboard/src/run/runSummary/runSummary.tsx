@@ -43,6 +43,25 @@ export const RunSummary: RunSummaryComponent = (props) => {
   const hasCompletion = !!run.completion;
   const completed = !!run.completion?.completed;
   const inactivityTimeoutMs = run.completion?.inactivityTimeoutMs;
+  const metaVersions = (run.metaVersions ? run.metaVersions : []);
+
+  let metaVersionsColumnLeft = (run.metaVersions ? run.metaVersions : []);
+  let metaVersionsColumnRight = (run.metaVersions ? run.metaVersions : []);
+  metaVersionsColumnLeft = [];
+  metaVersionsColumnRight = [];
+
+  const totalItems = metaVersions.length + 3;
+  const half = totalItems / 2;
+
+  metaVersions.map((versionItem, index) => {
+    const numberToAdd = (totalItems%2 == 0 ? 4 : 3);
+    if((index + numberToAdd) > half){
+      metaVersionsColumnRight.push(versionItem);
+    } 
+    else {
+      metaVersionsColumnLeft.push(versionItem);
+    }
+  });
 
   if (!run.progress) {
     return (
