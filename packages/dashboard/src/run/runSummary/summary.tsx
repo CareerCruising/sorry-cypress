@@ -45,6 +45,24 @@ export function RunSummaryComponent({
   const inactivityTimeoutMs = run.completion?.inactivityTimeoutMs;
   const metaVersions = (run.metaVersions ? run.metaVersions : []);
 
+  let metaVersionsColumnLeft = (run.metaVersions ? run.metaVersions : []);
+  let metaVersionsColumnRight = (run.metaVersions ? run.metaVersions : []);
+  metaVersionsColumnLeft = [];
+  metaVersionsColumnRight = [];
+
+  const totalItems = metaVersions.length + 3;
+  const half = totalItems / 2;
+
+  metaVersions.map((versionItem, index) => {
+    const numberToAdd = (totalItems%2 == 0 ? 4 : 3);
+    if((index + numberToAdd) > half){
+      metaVersionsColumnRight.push(versionItem);
+    } 
+    else {
+      metaVersionsColumnLeft.push(versionItem);
+    }
+  });
+
   // const metaVersions = [
   //   {
   //     "name": "Educator API",
@@ -97,7 +115,7 @@ export function RunSummaryComponent({
           <div>
             <strong>Execution details</strong>
           </div>
-          <ul>
+          <ul style={{ float: "left" }}>
             <li>
               <Text>
                 Started At: <FormattedDate value={parseISO(runCreatedAt)} />
@@ -117,7 +135,17 @@ export function RunSummaryComponent({
                 {claimedSpecsCount} / {overallSpecsCount}
               </Text>
             </li>
-            {metaVersions.map((versionItem) => (
+            {metaVersionsColumnLeft.map((versionItem) => (
+              <li>
+                <Text>{versionItem?.name}: </Text>
+                  <Text>
+                    {versionItem?.version}
+                  </Text>
+              </li>
+            ))}
+          </ul>
+          <ul style={{ float: "right" }}>
+            {metaVersionsColumnRight.map((versionItem) => (
               <li>
                 <Text>{versionItem?.name}: </Text>
                   <Text>
