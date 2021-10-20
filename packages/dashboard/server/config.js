@@ -6,3 +6,4 @@ exports.GRAPHQL_SCHEMA_URL =
 exports.GRAPHQL_CLIENT_CREDENTIALS =
   process.env.GRAPHQL_CLIENT_CREDENTIALS || '';
 exports.CI_URL = process.env.CI_URL || '';
+exports.COLOR_INDEX = process.env.COLOR_INDEX || 0;
