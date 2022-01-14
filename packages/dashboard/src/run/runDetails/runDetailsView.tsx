@@ -1,4 +1,7 @@
-import { VisibilityOff as VisibilityOffIcon } from '@mui/icons-material';
+import {
+  Loop as LoopIcon,
+  VisibilityOff as VisibilityOffIcon,
+} from '@mui/icons-material';
 import { Alert, Grid, Skeleton, Typography } from '@mui/material';
 import { Toolbar } from '@sorry-cypress/dashboard/components';
 import {
@@ -6,8 +9,10 @@ import {
   useGetRunQuery,
 } from '@sorry-cypress/dashboard/generated/graphql';
 import { useHideSuccessfulSpecs } from '@sorry-cypress/dashboard/hooks';
-import { useAutoRefreshRate } from '@sorry-cypress/dashboard/hooks/useAutoRefresh';
-import { WithMaterial } from '@sorry-cypress/dashboard/lib/material';
+import {
+  useAutoRefresh,
+  useAutoRefreshRate,
+} from '@sorry-cypress/dashboard/hooks/useAutoRefresh';
 import {
   getProjectPath,
   getRunPath,
@@ -16,20 +21,17 @@ import {
 } from '@sorry-cypress/dashboard/lib/navigation';
 import { RunSummary } from '@sorry-cypress/dashboard/run/runSummary/runSummary';
 import React, { FunctionComponent, useLayoutEffect } from 'react';
-import { RunDetails } from './details';
+import { useParams } from 'react-router-dom';
+import { RunDetails } from './runDetails';
 
-export const RunDetailsView: RunDetailsViewComponent = (props) => {
-  const {
-    match: {
-      params: { id },
-    },
-  } = props;
-
+export const RunDetailsView: RunDetailsViewComponent = () => {
+  const { id } = useParams();
   const autoRefreshRate = useAutoRefreshRate();
   const [hidePassedSpecs, setHidePassedSpecs] = useHideSuccessfulSpecs();
+  const [shouldAutoRefresh, setShouldAutoRefresh] = useAutoRefresh();
 
   const { loading, error, data } = useGetRunQuery({
-    variables: { runId: id },
+    variables: { runId: id! },
     pollInterval: autoRefreshRate,
   });
 
@@ -93,18 +95,28 @@ export const RunDetailsView: RunDetailsViewComponent = (props) => {
   }
 
   return (
-    <WithMaterial>
+    <>
       <Toolbar
         actions={[
           {
             key: 'hidePassedSpecs',
             text: 'Hide Successful Specs',
-            primary: hidePassedSpecs,
             icon: VisibilityOffIcon,
             selected: hidePassedSpecs,
             toggleButton: true,
             onClick: () => {
               setHidePassedSpecs(!hidePassedSpecs);
+            },
+          },
+          {
+            key: 'autoRefresh',
+            text: 'Auto Refresh',
+            icon: LoopIcon,
+            toggleButton: true,
+            selected: !!shouldAutoRefresh,
+            onClick: () => {
+              setShouldAutoRefresh(!shouldAutoRefresh);
+              window.location.reload();
             },
           },
         ]}
@@ -114,12 +126,12 @@ export const RunDetailsView: RunDetailsViewComponent = (props) => {
         component="h1"
         variant="h6"
         color="text.primary"
-        sx={{ my: 5 }}
+        sx={{ mt: 5, mb: 2 }}
       >
         Spec Files
       </Typography>
       <RunDetails run={data.run} hidePassedSpecs={hidePassedSpecs} />
-    </WithMaterial>
+    </>
   );
 };
 
@@ -150,10 +162,6 @@ const updateNav = (data?: GetRunQuery) =>
   }, [data]);
 
 type RunDetailsViewProps = {
-  match: {
-    params: {
-      id: string;
-    };
-  };
+  // nothing yet
 };
 type RunDetailsViewComponent = FunctionComponent<RunDetailsViewProps>;

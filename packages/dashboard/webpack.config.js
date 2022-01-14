@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -6,9 +7,10 @@ module.exports = {
     main: ['./src/index.tsx'],
   },
   devtool: 'source-map',
+  mode: 'development',
   output: {
     publicPath: '/',
-    jsonpScriptType: 'module',
+    scriptType: 'module',
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.mjs',
   },
@@ -26,6 +28,30 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
       },
+      {
+        test: /\.(woff|woff2|eot|ttf)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: 'svg-url-loader',
+            options: {
+              limit: 10000,
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
@@ -38,6 +64,5 @@ module.exports = {
   ],
   devServer: {
     writeToDisk: true,
-    host: '0.0.0.0',
   },
 };

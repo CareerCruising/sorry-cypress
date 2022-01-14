@@ -5,12 +5,11 @@ import {
   NextPlanOutlined as NextPlanOutlinedIcon,
   RadioButtonUnchecked as RadioButtonUncheckedIcon,
 } from '@mui/icons-material';
-import { Box, Tooltip } from '@mui/material';
-import { padStart } from 'lodash';
+import { Tooltip } from '@mui/material';
 import React, { FunctionComponent } from 'react';
-import { Chip } from '..';
+import { Chip, Pad } from '..';
 
-export const TestSuccessBadge: TestBadgeComponent = (props) => {
+export const TestSuccessChip: TestBadgeComponent = (props) => {
   const { value } = props;
 
   return (
@@ -83,27 +82,6 @@ export const TestOverallBadge: TestBadgeComponent = (props) => {
     </Tooltip>
   );
 };
-
-const Pad: PadComponent = (props) => {
-  const { number } = props;
-
-  return (
-    <Box
-      component="span"
-      whiteSpace="pre"
-      sx={{
-        opacity: !number ? 0.4 : undefined,
-      }}
-    >
-      {padStart(number?.toString(), 4)}
-    </Box>
-  );
-};
-
-type PadProps = {
-  number: number;
-};
-type PadComponent = FunctionComponent<PadProps>;
 
 type TestBadgeProps = {
   value: number;

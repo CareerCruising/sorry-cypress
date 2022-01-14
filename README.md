@@ -1,34 +1,27 @@
-<div align="center">
-<div>:octocat: An open-source, on-premise, self-hosted cypress tests dashboard :evergreen_tree:</div>
-</div>
-
-<br />
-
 ![Update Dockerhub Images](https://github.com/agoldis/sorry-cypress/workflows/Update%20Dockerhub%20Images/badge.svg?event=push)
 ![Update Dockerhub Images](https://github.com/agoldis/sorry-cypress/workflows/Lint%20and%20test/badge.svg)
 <a href="https://join.slack.com/t/sorry-cypress/shared_invite/zt-eis1h6jl-tJELaD7q9UGEhMP8WHJOaw" target="_blank">![Join slack](https://img.shields.io/badge/join-slack-orange?logo=slack)<a/>
 
-**Sorry-cypress** is an open-source cypress tests dashboard that unlocks unlimited parallelization, test recordings, integration with Github, Slack and more.
-
-**Sorry-cypress** can be installed on AWS, Google Cloud, Heroku or any other infrastructure - cloud and on-premise - using Docker, docker-compose, or Kubernetes.
-
+  
+<div align="center">
 <p align="center">
-  <a href="https://sorry-cypress.dev">https://sorry-cypress.dev</a>
-</p>
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/1637928/111021636-b45e5400-8382-11eb-92ed-3ca69182555b.png"  width="320" />
+  <img width="830" alt="banner dark" src="https://user-images.githubusercontent.com/1637928/147379205-2fe4fb9d-49e6-4a2b-917b-2a28973d2a3a.png">
 </p>
 
----
+<div>An open-source cypress dashboard</div>
+</div>
 
-<p align="center"><strong>Currents.dev</strong>  - pay less for cypress tests.</p>
-<p  align="center">Cost-effective alternative cypress dashboard. Pay less for parallelization, test recordings and integrations.</p>
-
+<br />
 <p align="center">
+  <a href="https://sorry-cypress.dev">https://sorry-cypress.dev</a> 
+ | 
   <a href="https://currents.dev?utm_source=github_readme">https://currents.dev</a>
 </p>
 
----
+
+**Sorry-cypress** is an open-source, free cypress tests dashboard that unlocks unlimited parallelization, test recordings, integration with Github, Slack and more.
+
+**Currents.dev** - is a paid version of sorry-cypress with additional [features](https://currents.notion.site/Features-Comparison-83229899965147eab011aba2a2fcd421), enhanced security and performance.
 
 ## Table of contents
 
@@ -136,6 +129,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="http://jovanilic.com"><img src="https://avatars.githubusercontent.com/u/15846154?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jovan Ilić</b></sub></a><br /><a href="https://github.com/sorry-cypress/sorry-cypress/commits?author=Zaista" title="Code">💻</a></td>
     <td align="center"><a href="http://www.scottux.com"><img src="https://avatars.githubusercontent.com/u/135884?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Scott</b></sub></a><br /><a href="https://github.com/sorry-cypress/sorry-cypress/commits?author=scottux" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.karimould.dev/"><img src="https://avatars.githubusercontent.com/u/18060129?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Karim Ould Mahieddine</b></sub></a><br /><a href="https://github.com/sorry-cypress/sorry-cypress/commits?author=karimould" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/pitthecat"><img src="https://avatars.githubusercontent.com/u/28391645?v=4?s=100" width="100px;" alt=""/><br /><sub><b>pitthecat</b></sub></a><br /><a href="#infra-pitthecat" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
   </tr>
 </table>
 

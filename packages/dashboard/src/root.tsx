@@ -1,7 +1,7 @@
 import { ApolloProvider } from '@apollo/client';
-import { ThemeProvider } from 'bold-ui';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Layout } from './components';
 import { DashboardView } from './dashboard/dashboardView';
 import { InstanceDetailsView } from './instance/instanceDetailsView';
@@ -10,7 +10,6 @@ import { ProjectEditView } from './project/projectEditView';
 import { RunDetailsView } from './run/runDetails/runDetailsView';
 import { RunRedirect } from './run/runsRedirect';
 import { RunsView } from './run/runsView';
-import { TestDetailsView } from './testItem/testDetailsView';
 import { theme } from './theme';
 
 class ErrorBoundary extends React.Component<
@@ -55,29 +54,32 @@ export const Root = () => {
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Router>
           <ErrorBoundary>
             <Layout>
-              <Route path="/" exact component={DashboardView} />
-
-              <Switch>
+              <Routes>
+                <Route path="/" element={<DashboardView />} />
                 <Route
-                  path="/:projectId+/runs/:buildId"
-                  component={RunRedirect}
+                  path="/:projectId/runs/:buildId"
+                  element={<RunRedirect />}
                 />
-                <Route path="/:projectId+/runs" component={RunsView} />
-              </Switch>
-              <Route path="/:projectId+/edit" component={ProjectEditView} />
-              <Route path="/run/:id" component={RunDetailsView} />
-              <Route
-                path="/instance/:id"
-                component={InstanceDetailsView}
-                exact
-              />
-              <Route
-                path="/instance/:instanceId/test/:testId"
-                component={TestDetailsView}
-              />
+                <Route path="/:projectId/runs" element={<RunsView />} />
+                <Route path="/:projectId/edit" element={<ProjectEditView />} />
+                <Route path="/run/:id" element={<RunDetailsView />} />
+                <Route
+                  path={'/instance/:id'}
+                  element={<InstanceDetailsView />}
+                />
+                <Route
+                  path={'/instance/:id/test/:testId'}
+                  element={<InstanceDetailsView />}
+                />
+                <Route
+                  path={'/instance/:id/others/:itemId'}
+                  element={<InstanceDetailsView />}
+                />
+              </Routes>
             </Layout>
           </ErrorBoundary>
         </Router>

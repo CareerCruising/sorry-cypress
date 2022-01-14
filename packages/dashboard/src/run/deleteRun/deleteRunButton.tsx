@@ -1,4 +1,5 @@
 import { DeleteOutline, Warning } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import {
   Alert,
   AlertTitle,
@@ -6,10 +7,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   Grid,
   IconButton,
-  Typography,
 } from '@mui/material';
 import {
   GetRunsFeedDocument,
@@ -17,15 +18,12 @@ import {
 } from '@sorry-cypress/dashboard/generated/graphql';
 import { useAsync } from '@sorry-cypress/dashboard/hooks/';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { useRouteMatch } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 export const DeleteRunButton: DeleteRunButtonComponent = (props) => {
   const { runId, ciBuildId } = props;
 
-  const {
-    params: { projectId },
-  } = useRouteMatch<{ projectId: string }>();
-
+  const { projectId } = useParams();
   const [deleteRunMutation] = useDeleteRunMutation({
     variables: {
       runId,
@@ -60,20 +58,27 @@ export const DeleteRunButton: DeleteRunButtonComponent = (props) => {
 
   return (
     <>
-      <Dialog onClose={() => setShowModal(false)} open={shouldShowModal}>
-        <DialogTitle>Delete run `{ciBuildId}`?</DialogTitle>
+      <Dialog
+        aria-labelledby="delete-run-dialog-title"
+        aria-describedby="delete-run-dialog-description"
+        onClose={() => setShowModal(false)}
+        open={shouldShowModal}
+      >
+        <DialogTitle id="delete-run-dialog-title">
+          Delete run `{ciBuildId}`?
+        </DialogTitle>
         <DialogContent>
           <Grid container alignItems="center" spacing={1}>
             <Grid item>
               <Warning fontSize="large" color="error" />
             </Grid>
             <Grid item xs>
-              <Typography variant="body1">
+              <DialogContentText id="delete-run-dialog-description">
                 Deleting run will permanently delete the associated data (run,
                 instances, test results).
                 <br />
                 Running tests associated with the run will fail.
-              </Typography>
+              </DialogContentText>
               {deleteError && (
                 <Alert severity="error">
                   <AlertTitle>Delete error</AlertTitle>
@@ -84,24 +89,19 @@ export const DeleteRunButton: DeleteRunButtonComponent = (props) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Grid container justifyContent="flex-end" spacing={1}>
-            <Grid item>
-              <Button color="inherit" onClick={() => setShowModal(false)}>
-                Cancel
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                color="error"
-                variant="contained"
-                onClick={startDeleteRun}
-                disabled={deleting}
-                startIcon={<DeleteOutline />}
-              >
-                {deleting ? 'Deleting' : 'Delete'}
-              </Button>
-            </Grid>
-          </Grid>
+          <Button variant="contained" onClick={() => setShowModal(false)}>
+            Cancel
+          </Button>
+          <LoadingButton
+            loading={deleting}
+            loadingPosition="start"
+            color="error"
+            variant="contained"
+            onClick={startDeleteRun}
+            startIcon={<DeleteOutline />}
+          >
+            {deleting ? 'Deleting' : 'Delete'}
+          </LoadingButton>
         </DialogActions>
       </Dialog>
       <IconButton

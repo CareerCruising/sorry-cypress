@@ -32,7 +32,6 @@ import { red } from '@mui/material/colors';
 import {
   createTheme,
   styled,
-  StyledEngineProvider,
   Theme,
   ThemeProvider,
   useTheme,
@@ -42,9 +41,10 @@ import {
   NavItemType,
   navStructure,
 } from '@sorry-cypress/dashboard/lib/navigation';
+import logoDark from '@sorry-cypress/dashboard/resources/logo-dark.svg';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { version } from '../../../package.json';
+import packageJson from '../../../package.json';
 
 export const DRAWER_WIDTH = 310;
 export const DRAWER_WIDTH_SM = 73;
@@ -67,7 +67,6 @@ const sidebarTheme = createTheme({
   typography: {
     fontWeightBold: 700,
     fontWeightMedium: 500,
-    fontFamily: 'IBM Plex Sans',
     fontWeightRegular: 400,
   },
 });
@@ -100,7 +99,7 @@ const DrawerHeader = styled('div', { name: 'DrawerHeader' })(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     justifyContent: 'center',
   },
-  ...theme.mixins.toolbar,
+  ...(theme.mixins.toolbar as any),
 }));
 
 const DrawerFooter = styled('div', {
@@ -118,7 +117,7 @@ const DrawerFooter = styled('div', {
   bottom: 0,
   overflow: 'auto',
   padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
+  ...(theme.mixins.toolbar as any),
 }));
 
 const Drawer = styled(MuiDrawer, {
@@ -163,7 +162,7 @@ export const ProjectListMenu: ProjectListMenuType = ({
               key={decodeURIComponent(project.projectId)}
               sx={{ pl: 4 }}
               component={RouterLink}
-              to={`/${project.projectId}/runs`}
+              to={`/${encodeURIComponent(project.projectId)}/runs`}
               onClick={onItemClick}
             >
               <ListItemIcon
@@ -195,7 +194,7 @@ export const ProjectListMenu: ProjectListMenuType = ({
                 aria-label={decodeURIComponent(project.projectId)}
                 sx={{ opacity: 0.6, padding: 1.5, color: project.projectColor }}
                 component={RouterLink}
-                to={`/${project.projectId}/runs`}
+                to={`/${encodeURIComponent(project.projectId)}/runs`}
                 onClick={onItemClick}
                 size="large"
               >
@@ -219,13 +218,13 @@ export const ProjectDetailsMenu: ProjectDetailsMenuType = ({
   const projectMenuItems = [
     {
       label: 'Latest runs',
-      link: `/${projectId}/runs`,
+      link: `/${encodeURIComponent(projectId)}/runs`,
       iconComponent: PlayLessonIcon,
       type: NavItemType.latestRuns,
     },
     {
       label: 'Project settings',
-      link: `/${projectId}/edit`,
+      link: `/${encodeURIComponent(projectId)}/edit`,
       iconComponent: SettingsIcon,
       type: NavItemType.projectSettings,
     },
@@ -338,14 +337,14 @@ export const Sidebar: SidebarType = ({ open, onToggleSidebar }) => {
           component="div"
           sx={{
             justifyContent: 'center',
-            maxWidth: 300,
+            maxWidth: 275,
           }}
         >
           <ListItemAvatar sx={{ minWidth: '42px' }}>
             <RouterLink to="/">
               <Avatar
                 alt="Sorry Cypress Dashboard Home"
-                src={`https://gblobscdn.gitbook.com/spaces%2F-MS6gDAYECuzpKjjzrdc%2Favatar-1611996755562.png?alt=media`}
+                src={logoDark}
                 variant="square"
                 sx={{
                   transition: 'all 0.3s',
@@ -375,7 +374,7 @@ export const Sidebar: SidebarType = ({ open, onToggleSidebar }) => {
               component: RouterLink,
               to: '/',
             }}
-            secondary={`v${version}`}
+            secondary={`v${packageJson.version}`}
             secondaryTypographyProps={{
               sx: {
                 transition: 'all 0.3s',
@@ -388,7 +387,7 @@ export const Sidebar: SidebarType = ({ open, onToggleSidebar }) => {
               component: Link,
               underline: 'none',
               target: '_blank',
-              href: `https://github.com/sorry-cypress/sorry-cypress/releases/tag/v${version}`,
+              href: `https://github.com/sorry-cypress/sorry-cypress/releases/tag/v${packageJson.version}`,
               rel: 'noopener noreferrer',
             }}
           />
@@ -454,7 +453,7 @@ export const Sidebar: SidebarType = ({ open, onToggleSidebar }) => {
         )}
         {!loading && !isHome && projectNavItem?.label && projectView?.type && (
           <ProjectDetailsMenu
-            projectId={projectNavItem.label}
+            projectId={decodeURIComponent(projectNavItem?.label || '')}
             projectColor={currentProject?.projectColor}
             open={open}
             selectedItem={projectView.type}
@@ -610,35 +609,35 @@ export const Sidebar: SidebarType = ({ open, onToggleSidebar }) => {
 
   const DrawerComponent = smallScreen ? MuiDrawer : Drawer;
   return (
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={sidebarTheme}>
-        <DrawerComponent
-          variant={smallScreen ? 'temporary' : 'permanent'}
-          open={open}
-          {...(smallScreen
+    // <StyledEngineProvider injectFirst>
+    <ThemeProvider theme={sidebarTheme}>
+      <DrawerComponent
+        variant={smallScreen ? 'temporary' : 'permanent'}
+        open={open}
+        {...(smallScreen
+          ? {
+              anchor: 'left',
+              ModalProps: {
+                keepMounted: true,
+              },
+            }
+          : {})}
+        sx={
+          smallScreen
             ? {
-                anchor: 'left',
-                ModalProps: {
-                  keepMounted: true,
+                '& .MuiDrawer-paper': {
+                  boxSizing: 'border-box',
+                  width: '100%',
+                  backgroundImage: 'unset',
                 },
               }
-            : {})}
-          sx={
-            smallScreen
-              ? {
-                  '& .MuiDrawer-paper': {
-                    boxSizing: 'border-box',
-                    width: '100%',
-                    backgroundImage: 'unset',
-                  },
-                }
-              : {}
-          }
-        >
-          {drawerContent}
-        </DrawerComponent>
-      </ThemeProvider>
-    </StyledEngineProvider>
+            : {}
+        }
+      >
+        {drawerContent}
+      </DrawerComponent>
+    </ThemeProvider>
+    // </StyledEngineProvider>
   );
 };
 

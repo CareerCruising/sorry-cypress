@@ -1,8 +1,8 @@
 import {
-  DeleteOutline as DeleteOutlineIcon,
   SettingsBackupRestore as SettingsBackupRestoreIcon,
   Warning as WarningIcon,
 } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import {
   Alert,
   AlertTitle,
@@ -10,17 +10,18 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   Grid,
   IconButton,
   Tooltip,
-  Typography,
 } from '@mui/material';
 import {
   GetRunDocument,
   useResetInstanceMutation,
 } from '@sorry-cypress/dashboard/generated/graphql';
 import { useAsync } from '@sorry-cypress/dashboard/hooks/';
+import { client } from '@sorry-cypress/dashboard/lib/apolloClient';
 import { getBase } from '@sorry-cypress/dashboard/lib/path';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -56,6 +57,7 @@ export const ResetInstanceButton = ({
     if (!deleteResult) {
       return;
     }
+    client.reFetchObservableQueries();
     setShowModal(false);
   }, [deleteResult]);
 
@@ -70,20 +72,27 @@ export const ResetInstanceButton = ({
 
   return (
     <>
-      <Dialog onClose={() => setShowModal(false)} open={shouldShowModal}>
-        <DialogTitle>Delete recorded data for `{getBase(spec)}` ?</DialogTitle>
+      <Dialog
+        aria-labelledby="reset-spec-dialog-title"
+        aria-describedby="reset-spec-dialog-description"
+        onClose={() => setShowModal(false)}
+        open={shouldShowModal}
+      >
+        <DialogTitle id="reset-spec-dialog-title">
+          Delete recorded data for `{getBase(spec)}` ?
+        </DialogTitle>
         <DialogContent>
           <Grid container alignItems="center" spacing={1}>
             <Grid item>
               <WarningIcon fontSize="large" color="error" />
             </Grid>
             <Grid item xs>
-              <Typography variant="body1">
+              <DialogContentText id="reset-spec-dialog-description">
                 This will remove result information for this instance. You will
                 need to run the tests with the same
                 <strong> ci-build-id </strong> again to re-record data for this
                 instance.
-              </Typography>
+              </DialogContentText>
               {deleteError && (
                 <Alert severity="error">
                   <AlertTitle>Delete error</AlertTitle>
@@ -96,25 +105,26 @@ export const ResetInstanceButton = ({
         <DialogActions>
           <Grid container justifyContent="flex-end" spacing={1}>
             <Grid item>
-              <Button color="inherit" onClick={() => setShowModal(false)}>
+              <Button variant="contained" onClick={() => setShowModal(false)}>
                 Cancel
               </Button>
             </Grid>
             <Grid item>
-              <Button
+              <LoadingButton
+                loading={deleting}
+                loadingPosition="start"
                 color="error"
                 variant="contained"
                 onClick={deleteAction}
-                disabled={deleting}
-                startIcon={<DeleteOutlineIcon />}
+                startIcon={<SettingsBackupRestoreIcon />}
               >
                 {deleting ? 'Resetting' : 'Reset'}
-              </Button>
+              </LoadingButton>
             </Grid>
           </Grid>
         </DialogActions>
       </Dialog>
-      <Tooltip title="Rest">
+      <Tooltip title="Reset">
         <IconButton
           size="small"
           color="error"
