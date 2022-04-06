@@ -401,7 +401,15 @@ export type Run = {
   specs: Array<RunSpec>;
   completion: Maybe<RunCompletion>;
   progress: Maybe<RunProgress>;
+  metaVersions?: Maybe<Array<MetaVersion>>;
 };
+
+export type MetaVersion = {
+  __typename?: 'MetaVersion';
+  name: Scalars['String'];
+  description: Scalars['String'];
+  version: Scalars['String'];
+}
 
 export type RunCompletion = {
   __typename?: 'RunCompletion';

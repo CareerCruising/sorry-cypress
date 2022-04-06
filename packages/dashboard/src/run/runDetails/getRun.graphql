@@ -14,5 +14,8 @@ query getRun($runId: ID!) {
     progress {
       ...RunProgress
     }
+    metaVersions {
+      ...RunSummaryMetaVersion
+    }
   }
 }

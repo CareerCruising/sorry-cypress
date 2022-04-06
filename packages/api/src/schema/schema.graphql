@@ -85,6 +85,13 @@ type Run {
   specs: [RunSpec!]!
   completion: RunCompletion
   progress: RunProgress
+  metaVersions: [MetaVersion]
+}
+
+type MetaVersion {
+  name: String!
+  description: String
+  version: String!
 }
 
 type RunCompletion {

@@ -81,6 +81,13 @@ export interface Run {
   completion?: RunCompletion;
   cypressVersion?: string;
   progress: RunProgress;
+  metaVersions?: MetaVersion[]
+}
+
+export interface MetaVersion {
+  name: string;
+  description?: string;
+  version: string;
 }
 
 export interface RunProgress {
