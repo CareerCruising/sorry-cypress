@@ -39,7 +39,7 @@
     "date-fns": "^2.21.3",
     "dotenv": "^8.2.0",
     "ejs": "^2.7.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0",
     "lodash": "^4.17.21",
